@@ -5,9 +5,8 @@ public class Wget {
         Thread thread = new Thread(
                 () -> {
                     try {
-                        int i = 0;
                         System.out.println("Начало загрузки.");
-                        while (i++ < 100) {
+                        for (int i = 0; i <= 100; i++) {
                             Thread.sleep(1000);
                             System.out.print("\rЗагрузка : " + i  + "%");
                         }
