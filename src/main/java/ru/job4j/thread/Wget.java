@@ -9,30 +9,36 @@ import java.net.URL;
 public class Wget implements Runnable {
     private final String url;
     private final int speed;
+    private final String out;
 
-    public Wget(String url, int speed) {
+    public Wget(String url, int speed, String out) {
         this.url = url;
         this.speed = speed;
+        this.out = out;
     }
 
     @Override
     public void run() {
         var startAt = System.currentTimeMillis();
         try (InputStream input = new URL(url).openStream();
-             OutputStream output = new FileOutputStream("output.xml")) {
-            System.out.println("Open connection: " + (System.currentTimeMillis() - startAt) + " ms");
+             OutputStream output = new FileOutputStream(out)) {
+            var startTime = System.currentTimeMillis();
             var dataBuffer = new byte[1024];
             int bytesRead;
+            int downloadBytes = 0;
             while ((bytesRead = input.read(dataBuffer, 0, dataBuffer.length)) != -1) {
-                var downloadAt = System.nanoTime();
                 output.write(dataBuffer, 0, bytesRead);
-                var timeDownloadPacket = System.nanoTime() - downloadAt;
-                System.out.println("Read 1024 bytes : " + timeDownloadPacket + " nano.");
+                downloadBytes += bytesRead;
 
-                var speedDownloadPacket = (dataBuffer.length / timeDownloadPacket) * 1000000;
-                if (speed == 1000) {
-                    var timeSleep = speedDownloadPacket / speed;
-                    Thread.sleep(timeSleep);
+                if (downloadBytes >= speed) {
+                    var timeDownload = System.currentTimeMillis() - startTime;
+
+                    if (timeDownload < 1000) {
+                        Thread.sleep(1000 - timeDownload);
+                    }
+
+                    downloadBytes = 0;
+                    startTime = System.currentTimeMillis();
                 }
             }
         } catch (IOException e) {
@@ -43,9 +49,13 @@ public class Wget implements Runnable {
     }
 
     public static void main(String[] args) throws InterruptedException {
+        if (args.length < 3) {
+            throw new IllegalArgumentException("Параметры не заданы!");
+        }
         String url = args[0];
         int speed = Integer.parseInt(args[1]);
-        Thread wget = new Thread(new Wget(url, speed));
+        String out = args[2];
+        Thread wget = new Thread(new Wget(url, speed, out));
         wget.start();
         wget.join();
     }
