@@ -12,21 +12,11 @@ public class AccountStorage {
     private final HashMap<Integer, Account> accounts = new HashMap<>();
 
     public synchronized boolean add(Account account) {
-        boolean result = false;
-        if (!accounts.containsKey(account.id())) {
-            accounts.put(account.id(), account);
-            result = true;
-        }
-        return result;
+        return accounts.putIfAbsent(account.id(), account) != null;
     }
 
     public synchronized boolean update(Account account) {
-        boolean result = false;
-        if (accounts.containsKey(account.id())) {
-            accounts.put(account.id(), account);
-            result = true;
-        }
-        return result;
+        return accounts.replace(account.id(), accounts.get(account.id()), account);
     }
 
     public synchronized void delete(int id) {
@@ -39,17 +29,18 @@ public class AccountStorage {
 
     public synchronized boolean transfer(int fromId, int toId, int amount) {
         boolean result = false;
-        if (accounts.containsKey(fromId)
-                && accounts.containsKey(toId)
-                && accounts.get(fromId).amount() >= amount) {
 
-            Account fromAccount = accounts.get(fromId);
-            Account toAccount = accounts.get(toId);
+        Optional<Account> fromAccount = getById(fromId);
+        Optional<Account> toAccount = getById(toId);
 
-            Account updateFromAccount = new Account(fromAccount.id(),
-                    fromAccount.amount() - amount);
-            Account updateToAccount = new Account(toAccount.id(),
-                    toAccount.amount() + amount);
+        if (fromAccount.isPresent()
+                && toAccount.isPresent()
+                && fromAccount.get().amount() >= amount) {
+
+            Account updateFromAccount = new Account(fromAccount.get().id(),
+                    fromAccount.get().amount() - amount);
+            Account updateToAccount = new Account(toAccount.get().id(),
+                    toAccount.get().amount() + amount);
 
             accounts.put(updateFromAccount.id(), updateFromAccount);
             accounts.put(updateToAccount.id(), updateToAccount);
