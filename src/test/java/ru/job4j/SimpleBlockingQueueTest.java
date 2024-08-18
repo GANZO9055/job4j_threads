@@ -23,7 +23,7 @@ class SimpleBlockingQueueTest {
 
         Thread consumer = new Thread(() -> {
             try {
-                Thread.sleep(1000); // Имитация задержки
+                Thread.sleep(1000);
                 assertEquals(1, (int) queue.poll());
                 assertEquals(2, (int) queue.poll());
                 assertEquals(3, (int) queue.poll());
@@ -54,7 +54,7 @@ class SimpleBlockingQueueTest {
 
         Thread consumer = new Thread(() -> {
             try {
-                Thread.sleep(1000); // Имитация задержки
+                Thread.sleep(1000);
                 assertEquals(1, (int) queue.poll());
                 assertEquals(2, (int) queue.poll());
             } catch (InterruptedException e) {
