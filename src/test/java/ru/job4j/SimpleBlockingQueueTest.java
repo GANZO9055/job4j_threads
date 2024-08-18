@@ -74,6 +74,7 @@ class SimpleBlockingQueueTest {
         final CopyOnWriteArrayList<Integer> buffer = new CopyOnWriteArrayList<>();
         final SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(5);
         final int maxElements = 5;
+        
         Thread producer = new Thread(
                 () -> {
                     for (int i = 0; i < maxElements; i++) {
