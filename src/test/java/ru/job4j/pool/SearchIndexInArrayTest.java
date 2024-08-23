@@ -19,11 +19,9 @@ class SearchIndexInArrayTest {
     @Test
     void SearchInArray() {
         Integer[] array = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+        int value = 11;
 
-
-        SearchIndexInArray search = new SearchIndexInArray<>(array, 0, array.length, 11);
-
-        Integer result  = search.compute();
+        Integer result = SearchIndexInArray.parallelSearch(array, value);
 
         assertThat(result).isEqualTo(10);
     }
