@@ -48,11 +48,11 @@ public class RowColSum {
     public static Sums[] asyncSum(int[][] matrix) throws ExecutionException, InterruptedException {
         int arrayLength = matrix.length;
         Sums[] sums = new Sums[arrayLength];
-        CompletableFuture<Sums>[] completableFuture = new CompletableFuture[arrayLength];
+        CompletableFuture<Sums> completableFuture;
 
         for (int i = 0; i < arrayLength; i++) {
             int finalI = i;
-            completableFuture[i] = CompletableFuture.supplyAsync(() -> {
+            completableFuture = CompletableFuture.supplyAsync(() -> {
                 Sums sums1 = new Sums();
                 int rowSum = 0;
                 int colSum = 0;
@@ -65,7 +65,7 @@ public class RowColSum {
                 return sums1;
             });
 
-            sums[i] = completableFuture[i].get();
+            sums[i] = completableFuture.get();
         }
         return sums;
     }
