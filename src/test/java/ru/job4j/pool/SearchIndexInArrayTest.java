@@ -9,10 +9,9 @@ class SearchIndexInArrayTest {
     @Test
     void SearchInArrayLess10() {
         Integer[] array = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        int value = 8;
 
-        SearchIndexInArray search = new SearchIndexInArray<>(array, 0, 10, 8);
-
-        Integer result  = search.compute();
+        Integer result = SearchIndexInArray.parallelSearch(array, value);
 
         assertThat(result).isEqualTo(7);
     }
@@ -22,7 +21,7 @@ class SearchIndexInArrayTest {
         Integer[] array = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
 
 
-        SearchIndexInArray search = new SearchIndexInArray<>(array, 0, 10, 11);
+        SearchIndexInArray search = new SearchIndexInArray<>(array, 0, array.length, 11);
 
         Integer result  = search.compute();
 
@@ -32,11 +31,9 @@ class SearchIndexInArrayTest {
     @Test
     void whenTypesDifferent() {
         Integer[] array = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+        String value = "11";
 
-
-        SearchIndexInArray search = new SearchIndexInArray<>(array, 0, 10, "11");
-
-        Integer result  = search.compute();
+        Integer result = SearchIndexInArray.parallelSearch(array, value);
 
         assertThat(result).isEqualTo(0);
     }
@@ -44,11 +41,9 @@ class SearchIndexInArrayTest {
     @Test
     void whenItemNotFound() {
         Integer[] array = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+        int value = 13;
 
-
-        SearchIndexInArray search = new SearchIndexInArray<>(array, 0, 10, 13);
-
-        Integer result  = search.compute();
+        Integer result = SearchIndexInArray.parallelSearch(array, value);
 
         assertThat(result).isEqualTo(0);
     }
