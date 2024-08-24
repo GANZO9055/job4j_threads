@@ -2,8 +2,10 @@ package ru.job4j.pools;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.concurrent.ExecutionException;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class RowColSumTest {
@@ -15,15 +17,14 @@ class RowColSumTest {
                 {7, 8, 9}
         };
 
-        RowColSum.Sums[] sums = RowColSum.sum(matrix);
+        Sums[] sums = RowColSum.sum(matrix);
+        Sums[] result = {
+                new Sums(6, 12),
+                new Sums(15, 15),
+                new Sums(24, 18)
+        };
 
-        assertEquals(6, sums[0].getRowSum());
-        assertEquals(15, sums[1].getRowSum());
-        assertEquals(24, sums[2].getRowSum());
-
-        assertEquals(12, sums[0].getColSum());
-        assertEquals(15, sums[1].getColSum());
-        assertEquals(18, sums[2].getColSum());
+        assertArrayEquals(sums, result);
     }
 
     @Test
@@ -34,14 +35,13 @@ class RowColSumTest {
                 {7, 8, 9}
         };
 
-        RowColSum.Sums[] sums = RowColSum.asyncSum(matrix);
+        Sums[] sums = RowColSum.asyncSum(matrix);
+        Sums[] result = {
+                new Sums(6, 12),
+                new Sums(15, 15),
+                new Sums(24, 18)
+        };
 
-        assertEquals(6, sums[0].getRowSum());
-        assertEquals(15, sums[1].getRowSum());
-        assertEquals(24, sums[2].getRowSum());
-
-        assertEquals(12, sums[0].getColSum());
-        assertEquals(15, sums[1].getColSum());
-        assertEquals(18, sums[2].getColSum());
+        assertArrayEquals(sums, result);
     }
 }

@@ -4,27 +4,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 public class RowColSum {
-    public static class Sums {
-        private int rowSum;
-        private int colSum;
-
-
-        public int getRowSum() {
-            return rowSum;
-        }
-
-        public void setRowSum(int rowSum) {
-            this.rowSum = rowSum;
-        }
-
-        public int getColSum() {
-            return colSum;
-        }
-
-        public void setColSum(int colSum) {
-            this.colSum = colSum;
-        }
-    }
 
     public static Sums[] sum(int[][] matrix) {
         int arrayLength = matrix.length;
@@ -38,8 +17,8 @@ public class RowColSum {
                 rowSum += matrix[i][j];
                 colSum += matrix[j][i];
             }
-            sums[i].rowSum = rowSum;
-            sums[i].colSum = colSum;
+            sums[i].setRowSum(rowSum);
+            sums[i].setColSum(colSum);
         }
 
         return sums;
